@@ -1,23 +1,40 @@
+#ifndef BANK_H
+#define BANK_H
+
 #include <stdio.h>
+#define MAX_OPERATIONS 100
 
-#define MAX_OPERATIONS 100 
+typedef struct {
+   char type;
+   double amount;
+} Operation;
 
+typedef struct {
+   long accountNumber;
+   double balance;
+   char holderName[50];
+   char email[50];
+   int numOfOperations;
+   Operation operations[MAX_OPERATIONS];
+} Account;
 
-typedef struct Account account;
+typedef enum {
+   dontPrint = 0,
+   doPrint = 1
+} printStatus;
 
-
-//functions that we are implementing on bank.c
-int addAccount(Account *acount);
-int updateAccount(long accountNumber, const char *newName);
+int addAccount();
+int updateAccount(long accountNumber, long newAccountNumber, char *newName);
 int deleteAccount(long accountNumber);
-int deleteHolderAccounts(const char *holderName);
-Account *searchAccount(int accountNumber);
+int deleteHolderAccounts(char* holder_name);
 void displayAllAccounts();
-int AddOperation(long accountNumber,char type,double amount);
 
+int addOperation(char opType, double amount, long int accountNo);
 
-int nameValidation(char holderName[50]);
-int emailAddressValidation(char email[50]);
-int amountValidation(double amount);
+int nameValidation(char *holder_name);
+int emailAddressValidation(char *user_email);
+int amountValidation(double user_amount);
 
+Account* searchForAccount(FILE* f, long accountNo, int printStatus);
 
+#endif
